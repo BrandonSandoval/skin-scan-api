@@ -2,15 +2,18 @@ const path = require('path');
 const { spawn } = require('child_process');
 const History = require('../models/History');
 
-exports.handlePreiction = async (req, res) => {
+exports.handlePrediction = async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ message: "No image uploaded" });
         }
         const imagePath = path.join(__dirname, '..', 'static', req.file.filename);
         
-        // Call python script for prediction
-        const python = spawn('python3', ['model/predict.py', imagePath]);
+        // Fix: provide absolute path to the Python script
+        const pythonScriptPath = path.join(__dirname, '..', '..', 'model', 'predict.py');
+        
+        // Call python script for prediction with correct path
+        const python = spawn('python', [pythonScriptPath, imagePath]);
 
         let result = '';
 
@@ -22,16 +25,26 @@ exports.handlePreiction = async (req, res) => {
             console.error("Python error:", err.toString());
         });
         
-        python.on('close', async () => {
-            const { label, confidence } = JSON.parse(result);
-
-            await History.create({
-                userId: req.user.userId,
-                imagePath: req.file.filename,
-                prediction: label,
-                confidence
-            });
-            res.json({ label, confidence });
+        python.on('close', async (code) => {
+            if (code !== 0) {
+                console.error("Python process exited with code", code);
+                return res.status(500).json({ message: "Prediction failed" });
+            }
+            
+            try {
+                const { label, confidence } = JSON.parse(result);
+                
+                await History.create({
+                    userId: req.user.userId,
+                    imagePath: req.file.filename,
+                    prediction: label,
+                    confidence
+                });
+                res.json({ label, confidence });
+            } catch (parseError) {
+                console.error("Failed to parse prediction result:", parseError);
+                return res.status(500).json({ message: "Failed to parse prediction result" });
+            }
         }); 
 
     } catch (error) {

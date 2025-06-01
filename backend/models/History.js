@@ -8,4 +8,4 @@ const historySchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now }
 });
 
-modeule.exports = mongoose.model('History', HistorySchema);
+module.exports = mongoose.model('History', historySchema);
