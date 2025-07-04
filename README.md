@@ -13,3 +13,11 @@ A backend system that uses a trained ResNet18 model to analyze skin lesion image
 - `/backend`: Express API
 - `/model`: Python model loader and predictor
 - `/docs`: API reference, architecture, metrics
+
+## Features
+- User registration & JWT-based authentication
+- Image upload and prediction using a PyTorch ResNet18 model
+- Prediction history per user
+- Feedback submission on prediction results
+- Protected API endpoints (via middleware)
+- Full test coverage with Jest + Supertest
