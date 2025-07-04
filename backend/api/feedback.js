@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const feedbackController = require('../controllers/feedbackController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// TODO: Implement route logic
+// Protect the feedback submission route
+router.post('/', authMiddleware, feedbackController.submitFeedback);
 
 module.exports = router;

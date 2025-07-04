@@ -30,17 +30,18 @@ exports.handlePrediction = async (req, res) => {
             try {
                 const { label, confidence } = JSON.parse(result);
 
+                // Create a proper history entry with all required fields
                 await History.create({
                     userId: req.user.userId,
-                    imagePath: req.file.originalname, // optional, or null
+                    imagePath: req.file.originalname,
                     prediction: label,
-                    confidence
+                    confidence: parseFloat(confidence) // Ensure this is a number
                 });
 
                 res.json({ label, confidence });
             } catch (err) {
                 console.error("Parse error:", err);
-                res.status(500).json({ message: "Failed to parse prediction result" });
+                res.status(500).json({ message: "Failed to parse prediction result" }); 
             }
         });
     } catch (err) {
