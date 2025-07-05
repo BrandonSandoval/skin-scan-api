@@ -20,8 +20,12 @@ exports.handlePrediction = async (req, res) => {
 
         // Set path to predict.py
         const pythonScriptPath = isDocker
-            ? path.join(__dirname, '..', 'model', 'predict.py') // inside Docker
+            ? path.join(__dirname, 'model', 'predict.py') // inside Docker
             : path.join(__dirname, '..', '..', 'model', 'predict.py'); // local
+        if (!fs.existsSync(pythonScriptPath)) {
+            console.error("Python script not found at:", pythonScriptPath);
+            return res.status(500).json({ message: "Prediction script missing" });
+        }
         const python = spawn('python', [pythonScriptPath, tempFilePath]);
 
         let result = '';
