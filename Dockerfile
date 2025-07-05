@@ -15,9 +15,9 @@ RUN pip install -r /tmp/requirements.txt
 # Create app directory
 WORKDIR /app
 
-# Copy backend code
+# Copy backend code and model code
 COPY backend/ .
-
+COPY model/ ./model
 # Install Node dependencies
 RUN npm install
 
