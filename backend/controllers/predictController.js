@@ -15,7 +15,13 @@ exports.handlePrediction = async (req, res) => {
         const tempFilePath = path.join(os.tmpdir(), `${Date.now()}-${req.file.originalname}`);
         fs.writeFileSync(tempFilePath, req.file.buffer);
 
-        const pythonScriptPath = path.join(__dirname, '..', '..', 'model', 'predict.py');
+        // Detect if inside Docker by checking a known Docker file
+        const isDocker = fs.existsSync('/.dockerenv');
+
+        // Set path to predict.py
+        const pythonScriptPath = isDocker
+            ? path.join(__dirname, '..', 'model', 'predict.py') // inside Docker
+            : path.join(__dirname, '..', '..', 'model', 'predict.py'); // local
         const python = spawn('python', [pythonScriptPath, tempFilePath]);
 
         let result = '';
