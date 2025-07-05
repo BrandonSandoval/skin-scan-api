@@ -1,18 +1,22 @@
 # Use Node.js base with Debian to support Python
 FROM node:20
 
-# Install Python & pip
-RUN apt-get update && apt-get install -y python3 python3-pip
+# Install Python and venv tools
+RUN apt-get update && apt-get install -y python3 python3-pip python3-venv
 
-# Install Python dependencies
+# Create virtual environment
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Install Python dependencies in venv
 COPY model/requirements.txt /tmp/requirements.txt
-RUN pip3 install -r /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
 
 # Create app directory
 WORKDIR /app
 
-# Copy your backend code
-COPY backend/ .  
+# Copy backend code
+COPY backend/ .
 
 # Install Node dependencies
 RUN npm install
@@ -20,5 +24,5 @@ RUN npm install
 # Expose port
 EXPOSE 10000
 
-# Run server
+# Run the server
 CMD ["node", "index.js"]
