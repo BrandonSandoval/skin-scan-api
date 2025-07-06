@@ -25,10 +25,6 @@
 
 ![image](https://github.com/user-attachments/assets/488ea2f5-b173-4606-a4f0-bdcc516ce259)
 
-- `GET /api/history/protected`: JWT Authentication
-
-![image](https://github.com/user-attachments/assets/45876a10-172d-415a-9ca0-cd9d7768a015)
-
 
 ## Feedback
 - `Post /api/feedback`: Send feedback correlated to pictures

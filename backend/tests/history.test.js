@@ -8,12 +8,12 @@ describe('GET /api/history', () => {
   });
 
   it('should return history with valid token', async () => {
-    // Register user first
+    // Register user
     await request(app)
       .post('/api/auth/register')
       .send({ email: 'testing@example.com', password: 'pass1234' });
 
-    // Now login
+    // Login to get token
     const loginRes = await request(app)
       .post('/api/auth/login')
       .send({ email: 'testing@example.com', password: 'pass1234' });
@@ -28,6 +28,6 @@ describe('GET /api/history', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
+    expect(Array.isArray(res.body.history)).toBe(true); 
   });
 });
