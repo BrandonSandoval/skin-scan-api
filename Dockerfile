@@ -8,21 +8,24 @@ RUN apt-get update && apt-get install -y python3 python3-pip python3-venv
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Install Python dependencies in venv
+# Install Python dependencies
 COPY model/requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
-# Create app directory
+# Set working directory (do this BEFORE copying your app)
 WORKDIR /app
 
-# Copy backend code and model code
+# Copy backend code first
 COPY backend/ .
+
+# Then copy model code inside /app/model
 COPY model/ ./model
+
 # Install Node dependencies
 RUN npm install
 
 # Expose port
-EXPOSE 10000
+EXPOSE 5000
 
 # Run the server
 CMD ["node", "index.js"]
