@@ -15,6 +15,7 @@ app.use('/api/predict', predictionRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/feedback', require('./api/feedback'));
 app.use('/api/dashboard', require('./api/dashboard'));
+app.use('/api/metrics', require('./api/metrics'));
 
 
 // Root test endpoint
