@@ -19,3 +19,17 @@ exports.submitFeedback = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+exports.getAllFeedbacks = async (req, res) => {
+    try {
+        const Feedback = require('../models/Feedback');
+        const allFeedbacks = await Feedback.find()
+        .populate('userId', 'email')
+        .populate('historyId', 'prediction confidence timestamp');
+
+        res.json({ feedbacks: allFeedbacks });
+    } catch (error) {
+        console.error('getAllFeedbacks error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
