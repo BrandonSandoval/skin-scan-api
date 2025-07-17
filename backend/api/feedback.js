@@ -10,7 +10,7 @@ router.post('/', authMiddleware, feedbackController.submitFeedback)
 router.get(
   '/all-feedbacks',
   authMiddleware,
-  requireRole('doctor', 'admin'), // ✅ this now returns a function
+  requireRole('doctor', 'admin'),
   feedbackController.getAllFeedbacks
 );
 
