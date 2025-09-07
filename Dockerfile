@@ -12,20 +12,26 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY model/requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
-# Set working directory (do this BEFORE copying your app)
+# --- Build frontend ---
+WORKDIR /frontend
+COPY frontend/my-app/package*.json ./
+RUN npm install --legacy-peer-deps
+COPY frontend/my-app ./
+RUN npm run build && npm run export
+
+# --- Back to backend ---
 WORKDIR /app
+COPY backend/ ./        
+COPY model/ ./model     
 
-# Copy backend code first
-COPY backend/ .
-
-# Then copy model code inside /app/model
-COPY model/ ./model
-
-# Install Node dependencies
+# Install backend dependencies
 RUN npm install
 
-# Expose port
+# Copy frontend export into backend public folder
+RUN mkdir -p /app/public && cp -r /frontend/out/* /app/public/
+
+# Expose backend port
 EXPOSE 5000
 
-# Run the server
+# Run server
 CMD ["node", "index.js"]
