@@ -8,7 +8,7 @@ export default function MetricsPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["metrics"],
     queryFn: async () => {
-      const res = await api.get("/metrics");
+      const res = await api.get("/api/metrics");
       return res.data;
     },
   });

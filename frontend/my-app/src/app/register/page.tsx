@@ -18,7 +18,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      await api.post("/auth/register", { email, password });
+      await api.post("/api/auth/register", { email, password });
       toast.success("Registration successful! Please log in.");
       router.push("/login");
     } catch (err: any) {

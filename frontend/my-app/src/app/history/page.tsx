@@ -11,7 +11,7 @@ export default function HistoryPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["history"],
     queryFn: async () => {
-      const res = await api.get("/history");
+      const res = await api.get("/api/history");
       return res.data.history; // backend returns { history: [...] }
     },
   });
@@ -25,7 +25,7 @@ export default function HistoryPage() {
       historyId: string;
       isAccurate: boolean;
     }) => {
-      await api.post("/feedback", { historyId, isAccurate });
+      await api.post("/api/feedback", { historyId, isAccurate });
     },
     onSuccess: () => {
       toast.success("Feedback submitted!");

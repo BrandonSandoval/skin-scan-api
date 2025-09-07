@@ -33,7 +33,7 @@ export default function UploadPage() {
 
     try {
       setLoading(true);
-      const res = await api.post("/predict", formData, {
+      const res = await api.post("/api/predict", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setResult(res.data);
