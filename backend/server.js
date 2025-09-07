@@ -1,5 +1,23 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
+
+const allowedOrigins = [
+  "http://localhost:3000", // local dev
+  "https://skin-scan-frontend.onrender.com" // Render frontend URL
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
+
 
 // Import route modules from ./api
 const authRoutes = require('./api/auth');
