@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs"); 
 const app = express();
 
 const allowedOrigins = [
@@ -40,9 +41,16 @@ app.get("/api", (req, res) => res.send("SkinScan API is running!"));
 // --- Serve frontend (Next.js static export) ---
 app.use(express.static(path.join(__dirname, "public")));
 
+// Fix for SPA routes (e.g. /register, /login, /dashboard on refresh)
 app.get("*", (req, res) => {
   if (!req.path.startsWith("/api")) {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
+    const filePath = path.join(__dirname, "public", req.path, "index.html");
+
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.sendFile(path.join(__dirname, "public", "index.html"));
+    }
   }
 });
 
