@@ -17,7 +17,10 @@ WORKDIR /frontend
 COPY frontend/my-app/package*.json ./
 RUN npm install --legacy-peer-deps
 COPY frontend/my-app ./
-RUN npm run build && npm run export
+
+# With Next.js 15 and `output: "export"` in next.config.js,
+# `npm run build` will automatically generate /frontend/out
+RUN npm run build
 
 # --- Back to backend ---
 WORKDIR /app
@@ -27,7 +30,7 @@ COPY model/ ./model
 # Install backend dependencies
 RUN npm install
 
-# Copy frontend export into backend public folder
+# Copy frontend static export into backend public folder
 RUN mkdir -p /app/public && cp -r /frontend/out/* /app/public/
 
 # Expose backend port
