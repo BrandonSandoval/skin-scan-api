@@ -41,6 +41,13 @@ app.get("/api", (req, res) => res.send("SkinScan API is running!"));
 // --- Serve frontend (Next.js static export) ---
 app.use(express.static(path.join(__dirname, "public")));
 
+// Always fallback to index.html for client-side routes
+app.get("*", (req, res) => {
+  if (!req.path.startsWith("/api")) {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+  }
+});
+
 // Fix for SPA routes (e.g. /register, /login, /dashboard on refresh)
 app.get("*", (req, res) => {
   if (!req.path.startsWith("/api")) {
