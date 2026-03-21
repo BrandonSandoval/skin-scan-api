@@ -3,13 +3,13 @@ const User = require('../models/User');
 
 afterEach(async () => {
     await User.deleteMany();
-})
+});
 
 describe('User Model Test', () => {
     it('should create a new user', async () => {
         const user = new User({
             email: 'unit@test.com',
-            passwordHash: 'testhas123'
+            passwordHash: 'testhas123',
         });
 
         const savedUser = await user.save();

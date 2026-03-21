@@ -9,7 +9,7 @@ exports.submitFeedback = async (req, res) => {
             userId,
             historyId,
             comment,
-            isAccurate
+            isAccurate,
         });
 
         await newFeedback.save();
@@ -24,8 +24,8 @@ exports.getAllFeedbacks = async (req, res) => {
     try {
         const Feedback = require('../models/Feedback');
         const allFeedbacks = await Feedback.find()
-        .populate('userId', 'email')
-        .populate('historyId', 'prediction confidence timestamp');
+            .populate('userId', 'email')
+            .populate('historyId', 'prediction confidence timestamp');
 
         res.json({ feedbacks: allFeedbacks });
     } catch (error) {

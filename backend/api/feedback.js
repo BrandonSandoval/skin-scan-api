@@ -1,18 +1,17 @@
-const express = require('express')
-const router = express.Router()
-const feedbackController = require('../controllers/feedbackController')
-const authMiddleware = require('../middleware/authMiddleware')
-const requireRole = require('../middleware/roleMiddleware')
+const express = require('express');
+const router = express.Router();
+const feedbackController = require('../controllers/feedbackController');
+const authMiddleware = require('../middleware/authMiddleware');
+const requireRole = require('../middleware/roleMiddleware');
 
 // Protect the feedback submission route
-router.post('/', authMiddleware, feedbackController.submitFeedback)
+router.post('/', authMiddleware, feedbackController.submitFeedback);
 
 router.get(
-  '/all-feedbacks',
-  authMiddleware,
-  requireRole('doctor', 'admin'),
-  feedbackController.getAllFeedbacks
+    '/all-feedbacks',
+    authMiddleware,
+    requireRole('doctor', 'admin'),
+    feedbackController.getAllFeedbacks,
 );
-
 
 module.exports = router;
