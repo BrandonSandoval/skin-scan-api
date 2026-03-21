@@ -35,7 +35,7 @@ describe('JWT Expiration Tests', () => {
             expect(res.status).toHaveBeenCalledWith(401);
             expect(res.json).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    error: expect.stringContaining('expired'),
+                    error: 'Token expired',
                 })
             );
             expect(next).not.toHaveBeenCalled();
@@ -149,7 +149,7 @@ describe('JWT Expiration Tests', () => {
             expect(res.status).toHaveBeenCalledWith(401);
             expect(res.json).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    error: 'No token provided',
+                    message: 'No token provided',
                 })
             );
             expect(next).not.toHaveBeenCalled();

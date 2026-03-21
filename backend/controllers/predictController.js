@@ -17,7 +17,7 @@ exports.handlePrediction = async (req, res) => {
         // Check if file was uploaded
         if (!req.file) {
             logger.logValidationFailure('/api/predict', 'No file uploaded', { ip: req.ip });
-            return res.status(400).json({ error: 'No image uploaded' });
+            return res.status(400).json({ message: 'No image uploaded' });
         }
 
         // Comprehensive image validation
@@ -56,7 +56,7 @@ exports.handlePrediction = async (req, res) => {
             }
         }
 
-        const pythonCommand = isDocker ? 'python3' : 'python';
+        const pythonCommand = isDocker ? 'python3' : 'python3';
         const command = isWindows && !isDocker ? 'py' : pythonCommand;
 
         logger.debug('Spawning Python process', { command, script: pythonScriptPath });
